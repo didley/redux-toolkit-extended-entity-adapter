@@ -10,7 +10,7 @@ See [createEntityAdapter docs](https://redux-toolkit.js.org/api/createEntityAdap
 
 ### `selectByIdOrThrow`
 Throws if selected entity is not found. Useful for when a the passed entity id will be known, to reduce unnecessary undefined checks.
-### `selectByIds` (TODO)
+### `selectByIds`
 ### `initialize` (TODO)
 
 ## Installing
