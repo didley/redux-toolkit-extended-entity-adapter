@@ -6,6 +6,7 @@ import type {
   Dictionary,
   EntityId,
 } from './models'
+import { definedOrThrow } from './utils'
 
 export function createSelectorsFactory<T>() {
   function getSelectors(): EntitySelectors<T, EntityState<T>>
@@ -29,6 +30,8 @@ export function createSelectorsFactory<T>() {
 
     const selectById = (entities: Dictionary<T>, id: EntityId) => entities[id]
 
+    const selectByIdOrThrow = (entities: Dictionary<T>, id: EntityId) => definedOrThrow(entities[id]);
+
     const selectTotal = createDraftSafeSelector(selectIds, (ids) => ids.length)
 
     if (!selectState) {
@@ -41,6 +44,11 @@ export function createSelectorsFactory<T>() {
           selectEntities,
           selectId,
           selectById
+        ),
+        selectByIdOrThrow: createDraftSafeSelector(
+          selectEntities,
+          selectId,
+          selectByIdOrThrow
         ),
       }
     }
@@ -59,6 +67,11 @@ export function createSelectorsFactory<T>() {
         selectGlobalizedEntities,
         selectId,
         selectById
+      ),
+      selectByIdOrThrow: createDraftSafeSelector(
+        selectGlobalizedEntities,
+        selectId,
+        selectByIdOrThrow
       ),
     }
   }

@@ -1,3 +1,4 @@
+import { definedOrThrow, isNonNullable } from '../utils'
 import { AClockworkOrange } from './fixtures/book'
 
 describe('Entity utils', () => {
@@ -60,6 +61,31 @@ describe('Entity utils', () => {
       selectIdValue(undefinedAClockworkOrange, (book: any) => book.id)
 
       expect(spy).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('isNonNullable()', () => {
+    it('returns true if input is not a nullable', () => {
+      expect(isNonNullable('Mr.Greg')).toBe(true)
+      expect(isNonNullable({})).toBe(true)
+    })
+
+    it('returns returns false is a nullable', () => {
+      expect(isNonNullable(undefined)).toBe(false)
+      expect(isNonNullable(null)).toBe(false)
+    })
+  })
+
+  describe('definedOrThrow()', () => {
+    it('returns supplied value if it is defined', () => {
+
+      const bookTitle = AClockworkOrange.title
+      expect(definedOrThrow(bookTitle)).toBe(bookTitle)
+    })
+
+    it('throws if supplied value not undefined or null', () => {
+      expect(() => { definedOrThrow(undefined) }).toThrowError()
+      expect(() => { definedOrThrow(null) }).toThrowError()
     })
   })
 })

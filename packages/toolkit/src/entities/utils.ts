@@ -47,3 +47,17 @@ export function splitAddedUpdatedEntities<T>(
   }
   return [added, updated]
 }
+
+export function isNonNullable<T>(input: T): input is NonNullable<T> {
+  return input !== undefined && input !== null
+}
+
+export function definedOrThrow<T>(val: T): NonNullable<T> {
+  if (!isNonNullable(val)) {
+    throw new Error(val + ' is undefined or null');
+  }
+
+  return val;
+}
+
+

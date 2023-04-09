@@ -62,6 +62,15 @@ describe('Entity State Selectors', () => {
       const second = selectors.selectById(state, AnimalFarm.id)
       expect(second).toBe(AnimalFarm)
     })
+
+    it('should create a selector for selecting a single item by ID, that throws if not found', () => {
+      const first: BookModel = selectors.selectByIdOrThrow(state, AClockworkOrange.id)
+      expect(first).toBe(AClockworkOrange)
+      const second: BookModel = selectors.selectByIdOrThrow(state, AnimalFarm.id)
+      expect(second).toBe(AnimalFarm)
+
+      expect(() => { selectors.selectByIdOrThrow(state, 'anIncorrectID') }).toThrowError()
+    })
   })
 
   describe('Uncomposed Selectors', () => {
@@ -120,6 +129,15 @@ describe('Entity State Selectors', () => {
       expect(first).toBe(AClockworkOrange)
       const second = selectors.selectById(state, AnimalFarm.id)
       expect(second).toBe(AnimalFarm)
+    })
+
+    it('should create a selector for selecting a single item by ID, that throws if not found', () => {
+      const first: BookModel = selectors.selectByIdOrThrow(state, AClockworkOrange.id)
+      expect(first).toBe(AClockworkOrange)
+      const second: BookModel = selectors.selectByIdOrThrow(state, AnimalFarm.id)
+      expect(second).toBe(AnimalFarm)
+
+      expect(() => { selectors.selectByIdOrThrow(state, 'anIncorrectID') }).toThrowError()
     })
   })
 })
