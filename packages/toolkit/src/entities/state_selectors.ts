@@ -28,9 +28,13 @@ export function createSelectorsFactory<T>() {
 
     const selectId = (_: unknown, id: EntityId) => id
 
+    const pickIds = (_: unknown, ids: EntityId[]) => ids
+
     const selectById = (entities: Dictionary<T>, id: EntityId) => entities[id]
 
     const selectByIdOrThrow = (entities: Dictionary<T>, id: EntityId) => definedOrThrow(entities[id]);
+
+    const selectByIds = (entities: Dictionary<T>, ids: EntityId[]) => ids.map(id => entities[id]).filter(e => e !== undefined) as T[]
 
     const selectTotal = createDraftSafeSelector(selectIds, (ids) => ids.length)
 
@@ -49,6 +53,11 @@ export function createSelectorsFactory<T>() {
           selectEntities,
           selectId,
           selectByIdOrThrow
+        ),
+        selectByIds: createDraftSafeSelector(
+          selectEntities,
+          pickIds,
+          selectByIds
         ),
       }
     }
@@ -72,6 +81,11 @@ export function createSelectorsFactory<T>() {
         selectGlobalizedEntities,
         selectId,
         selectByIdOrThrow
+      ),
+      selectByIds: createDraftSafeSelector(
+        selectGlobalizedEntities,
+        pickIds,
+        selectByIds
       ),
     }
   }

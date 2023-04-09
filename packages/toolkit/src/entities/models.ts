@@ -155,6 +155,7 @@ export interface EntitySelectors<T, V> {
   selectTotal: (state: V) => number
   selectById: (state: V, id: EntityId) => T | undefined
   selectByIdOrThrow: (state: V, id: EntityId) => T;
+  selectByIds: (state: V, ids: EntityId[]) => T[]
 }
 
 /**

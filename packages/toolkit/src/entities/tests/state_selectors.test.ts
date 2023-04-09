@@ -71,6 +71,11 @@ describe('Entity State Selectors', () => {
 
       expect(() => { selectors.selectByIdOrThrow(state, 'anIncorrectID') }).toThrowError()
     })
+
+    it('should create a selector for selecting multiple items by ID', () => {
+      const first = selectors.selectByIds(state, [AClockworkOrange.id, AnimalFarm.id, 'anIncorrectID'])
+      expect(first).toStrictEqual([AClockworkOrange, AnimalFarm])
+    })
   })
 
   describe('Uncomposed Selectors', () => {
@@ -138,6 +143,11 @@ describe('Entity State Selectors', () => {
       expect(second).toBe(AnimalFarm)
 
       expect(() => { selectors.selectByIdOrThrow(state, 'anIncorrectID') }).toThrowError()
+    })
+
+    it('should create a selector for selecting multiple items by ID', () => {
+      const first = selectors.selectByIds(state, [AClockworkOrange.id, AnimalFarm.id, 'anIncorrectID'])
+      expect(first).toStrictEqual([AClockworkOrange, AnimalFarm])
     })
   })
 })
