@@ -1,12 +1,12 @@
 {
   "name": "@didley/reduxjs-toolkit",
-  "version": "1.9.4",
-  "description": "The official, opinionated, batteries-included toolset for efficient Redux development",
+  "version": "1.9.5",
+  "description": "Extends redux-toolkit's createEntityAdapter with some additional utils",
   "author": "Mark Erikson <mark@isquaredsoftware.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reduxjs/redux-toolkit.git"
+    "url": "git+https://github.com/didley/redux-toolkit-extended-entity-adapter.git"
   },
   "keywords": [
     "redux",
