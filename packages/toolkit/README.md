@@ -18,10 +18,3 @@ Throws if selected entity is not found. Useful for when a the passed entity id w
 yarn add @didley/reduxjs-toolkit
 ```
 `reduxjs/redux-toolkit` is not required and can be uninstalled
-
-## Versioning
-Versioning is kept in sync with the upstream repo with an additional decimal eg.
-```
-@reduxjs/redux-toolkit: 1.9.3, 
-@didley/reduxjs-toolkit: 1.9.3.1
-```
