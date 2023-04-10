@@ -1,6 +1,6 @@
 {
   "name": "@didley/reduxjs-toolkit",
-  "version": "1.9.5",
+  "version": "1.9.6",
   "description": "Extends redux-toolkit's createEntityAdapter with some additional utils",
   "author": "Mark Erikson <mark@isquaredsoftware.com>",
   "license": "MIT",
