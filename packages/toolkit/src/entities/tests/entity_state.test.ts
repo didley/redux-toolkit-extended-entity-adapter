@@ -4,6 +4,12 @@ import type { PayloadAction } from '../../createAction'
 import { createAction } from '../../createAction'
 import { createSlice } from '../../createSlice'
 import type { BookModel } from './fixtures/book'
+import {
+  AllBookEntities,
+  AllBookEntityState,
+  AllBookEntityStateByTitle,
+  AllBooksUnsorted,
+} from './fixtures/book'
 
 describe('Entity State', () => {
   let adapter: EntityAdapter<BookModel>
@@ -79,5 +85,40 @@ describe('Entity State', () => {
 
     expect(afterUpsertSecond.entities[book1.id]).toEqual(book1a)
     expect(selectors.selectTotal(afterUpsertSecond)).toBe(1)
+  })
+
+  describe('should let you provide initial state', () => {
+    it('as list of models', () => {
+      adapter = createEntityAdapter({
+        initialState: AllBooksUnsorted,
+        selectId: (book: BookModel) => book.id,
+      })
+      expect(adapter.getInitialState()).toStrictEqual(AllBookEntityState)
+    })
+
+    it('as normalized entities', () => {
+      adapter = createEntityAdapter({
+        initialState: AllBookEntities,
+        selectId: (book: BookModel) => book.id,
+      })
+      expect(adapter.getInitialState()).toStrictEqual(AllBookEntityState)
+    })
+
+    it('as entity state', () => {
+      adapter = createEntityAdapter({
+        initialState: AllBookEntityState,
+        selectId: (book: BookModel) => book.id,
+      })
+      expect(adapter.getInitialState()).toStrictEqual(AllBookEntityState)
+    })
+
+    it('that gets sorted by supplied sort comparer', () => {
+      adapter = createEntityAdapter({
+        initialState: AllBookEntityState,
+        sortComparer: (a, b) => a.title.localeCompare(b.title),
+        selectId: (book: BookModel) => book.id,
+      })
+      expect(adapter.getInitialState()).toStrictEqual(AllBookEntityStateByTitle)
+    })
   })
 })

@@ -1,3 +1,5 @@
+import type { EntityState, Dictionary } from '../../models'
+
 export interface BookModel {
   id: string
   title: string
@@ -24,3 +26,31 @@ export const TheHobbit: BookModel = Object.freeze({
   title: 'The Hobbit',
   author: 'J. R. R. Tolkien',
 })
+
+export const AllBooksUnsorted: BookModel[] = [
+  AnimalFarm,
+  TheGreatGatsby,
+  AClockworkOrange,
+  TheHobbit,
+]
+export const AllBookEntities: Dictionary<BookModel> = Object.fromEntries(
+  AllBooksUnsorted.map((b) => [b.id, b])
+)
+export const AllBookEntityState: EntityState<BookModel> = {
+  ids: Object.keys(AllBookEntities),
+  entities: AllBookEntities,
+}
+
+const AllBooksByTitle: BookModel[] = [
+  AClockworkOrange,
+  AnimalFarm,
+  TheGreatGatsby,
+  TheHobbit,
+]
+const AllBookEntitiesByTitle: Dictionary<BookModel> = Object.fromEntries(
+  AllBooksByTitle.map((b) => [b.id, b])
+)
+export const AllBookEntityStateByTitle: EntityState<BookModel> = {
+  ids: Object.keys(AllBookEntitiesByTitle),
+  entities: AllBookEntitiesByTitle,
+}

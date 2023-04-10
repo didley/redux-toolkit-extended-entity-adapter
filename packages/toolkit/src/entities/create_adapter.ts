@@ -3,6 +3,8 @@ import type {
   Comparer,
   IdSelector,
   EntityAdapter,
+  EntityState,
+  Dictionary,
 } from './models'
 import { createInitialStateFactory } from './entity_state'
 import { createSelectorsFactory } from './state_selectors'
@@ -19,6 +21,7 @@ export function createEntityAdapter<T>(
   options: {
     selectId?: IdSelector<T>
     sortComparer?: false | Comparer<T>
+    initialState?: T[] | Dictionary<T> | EntityState<T>
   } = {}
 ): EntityAdapter<T> {
   const { selectId, sortComparer }: EntityDefinition<T> = {
@@ -27,7 +30,11 @@ export function createEntityAdapter<T>(
     ...options,
   }
 
-  const stateFactory = createInitialStateFactory<T>()
+  const stateFactory = createInitialStateFactory<T>({
+    selectId,
+    sortComparer,
+    ...options,
+  })
   const selectorsFactory = createSelectorsFactory<T>()
   const stateAdapter = sortComparer
     ? createSortedStateAdapter(selectId, sortComparer)

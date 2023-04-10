@@ -12,11 +12,12 @@ import {
   selectIdValue,
   ensureEntitiesArray,
   splitAddedUpdatedEntities,
+  reSortEntitiesMutably,
 } from './utils'
 
 export function createSortedStateAdapter<T>(
   selectId: IdSelector<T>,
-  sort: Comparer<T>
+  sortComparer: Comparer<T>
 ): EntityStateAdapter<T> {
   type R = EntityState<T>
 
@@ -94,7 +95,7 @@ export function createSortedStateAdapter<T>(
     }
 
     if (appliedUpdates) {
-      resortEntities(state)
+      reSortEntitiesMutably(state, selectId, sortComparer)
     }
   }
 
@@ -116,39 +117,13 @@ export function createSortedStateAdapter<T>(
     addManyMutably(added, state)
   }
 
-  function areArraysEqual(a: readonly unknown[], b: readonly unknown[]) {
-    if (a.length !== b.length) {
-      return false
-    }
-
-    for (let i = 0; i < a.length && i < b.length; i++) {
-      if (a[i] === b[i]) {
-        continue
-      }
-      return false
-    }
-    return true
-  }
-
   function merge(models: readonly T[], state: R): void {
     // Insert/overwrite all new/updated
     models.forEach((model) => {
       state.entities[selectId(model)] = model
     })
 
-    resortEntities(state)
-  }
-
-  function resortEntities(state: R) {
-    const allEntities = Object.values(state.entities) as T[]
-    allEntities.sort(sort)
-
-    const newSortedIds = allEntities.map(selectId)
-    const { ids } = state
-
-    if (!areArraysEqual(ids, newSortedIds)) {
-      state.ids = newSortedIds
-    }
+    reSortEntitiesMutably(state, selectId, sortComparer)
   }
 
   return {

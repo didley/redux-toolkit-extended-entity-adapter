@@ -49,6 +49,7 @@ export interface EntityState<T> {
 export interface EntityDefinition<T> {
   selectId: IdSelector<T>
   sortComparer: false | Comparer<T>
+  initialState?: T[] | Dictionary<T> | EntityState<T>
 }
 
 export type PreventAny<S, T> = IsAny<S, EntityState<T>, S>
@@ -154,7 +155,7 @@ export interface EntitySelectors<T, V> {
   selectAll: (state: V) => T[]
   selectTotal: (state: V) => number
   selectById: (state: V, id: EntityId) => T | undefined
-  selectByIdOrThrow: (state: V, id: EntityId) => T;
+  selectByIdOrThrow: (state: V, id: EntityId) => T
   selectByIds: (state: V, ids: EntityId[]) => T[]
 }
 

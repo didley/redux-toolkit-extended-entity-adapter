@@ -1,4 +1,10 @@
-import type { EntityState, IdSelector, Update, EntityId } from './models'
+import type {
+  EntityState,
+  IdSelector,
+  Update,
+  EntityId,
+  Comparer,
+} from './models'
 
 export function selectIdValue<T>(entity: T, selectId: IdSelector<T>) {
   const key = selectId(entity)
@@ -54,10 +60,50 @@ export function isNonNullable<T>(input: T): input is NonNullable<T> {
 
 export function definedOrThrow<T>(val: T): NonNullable<T> {
   if (!isNonNullable(val)) {
-    throw new Error(val + ' is undefined or null');
+    throw new Error(val + ' is undefined or null')
   }
 
-  return val;
+  return val
 }
 
+export function reSortEntitiesMutably<T>(
+  state: EntityState<T>,
+  selectById: IdSelector<T>,
+  sortComparer: Comparer<T>
+) {
+  const allEntities = Object.values(state.entities) as T[]
+  allEntities.sort(sortComparer)
 
+  const newSortedIds = allEntities.map(selectById)
+  const { ids } = state
+
+  if (!areArraysEqual(ids, newSortedIds)) {
+    state.ids = newSortedIds
+  }
+}
+
+function areArraysEqual(a: readonly unknown[], b: readonly unknown[]) {
+  if (a.length !== b.length) {
+    return false
+  }
+
+  for (let i = 0; i < a.length && i < b.length; i++) {
+    if (a[i] === b[i]) {
+      continue
+    }
+    return false
+  }
+  return true
+}
+
+export function isEntityState<T>(
+  input: EntityState<T> | any
+): input is EntityState<T> {
+  return (
+    typeof input === 'object' &&
+    input !== null &&
+    input.hasOwnProperty('entities') &&
+    input.hasOwnProperty('ids') &&
+    Object.keys(input).length === 2
+  )
+}
