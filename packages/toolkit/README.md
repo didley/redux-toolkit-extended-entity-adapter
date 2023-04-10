@@ -6,12 +6,29 @@ See [original README](OG_README.md)
 See [createEntityAdapter docs](https://redux-toolkit.js.org/api/createEntityAdapter)
 
 
-## Additional `createEntityAdapter` methods
+## Additional `createEntityAdapter` features
 
-### `selectByIdOrThrow`
+### createEntityAdapter({`initialState`})
+Improves API to setting initial sate, see https://github.com/reduxjs/redux-toolkit/issues/493#issuecomment-612471868
+
+`initialState` can be multiple shapes and will all return `EntityState`
+```ts
+const one = [{ id: 1, title: 'The Hobbit' }]
+const two =  { 1 : { id: 1, title: 'The Hobbit' } }
+const three = { ids: [1], entities: { 1: { id: 1, title: 'The Hobbit' } }
+```
+Example
+```ts
+const initialState = [{ id: 1, title: 'The Hobbit' }]
+
+const bookAdapter = createEntityAdapter({ initialState })
+
+bookAdapter.getInitialState() // { ids: [1], entities: { 1: { id: 1, title: 'The Hobbit' } }
+```
+### getSelectors().`selectByIdOrThrow`
 Throws if selected entity is not found. Useful for when a the passed entity id will be known, to reduce unnecessary undefined checks.
-### `selectByIds`
-### `initialize` (TODO)
+### getSelectors().`selectByIds`
+### (TODO) getSelectors().selectAll(state, `filterPredicate`)
 
 ## Installing
 ```bash
